@@ -8,12 +8,12 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 
-app.get('/api/passwords' , (req,res) => {
+app.get('/api/passwords', (req, res) => {
     const count = 5;
 
     // Generate 50 Passwords
-    const passwords = Array.from(Array(count).keys()).map(i => 
-        generatePassword(50,false)
+    const passwords = Array.from(Array(count).keys()).map(i =>
+        generatePassword(50, false)
     );
 
     res.json(passwords);
@@ -22,7 +22,11 @@ app.get('/api/passwords' , (req,res) => {
     console.log(`Sent ${count} passwords`);
 });
 
-const PORT = 5000;
-app.listen(PORT);
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
-console.log(`API in PORT : ${PORT}`);
+const port = process.env.PORT || 5000;
+app.listen(port);
+
+console.log(`Password generator listening on ${port}`);
